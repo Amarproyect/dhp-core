@@ -1,7 +1,9 @@
 import requests
 
+from dhp.providers.base import ProductProvider
 
-class PrestaShop:
+
+class PrestaShop(ProductProvider):
 
     def __init__(self, url, api_key):
         self.url = url.rstrip("/")
@@ -27,3 +29,4 @@ class PrestaShop:
 
     def product(self, product_id):
         return self._get(f"products/{product_id}")
+    
