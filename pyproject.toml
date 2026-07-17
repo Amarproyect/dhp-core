@@ -1,0 +1,7 @@
+[project]
+name = "dhp"
+version = "0.1.0"
+description = "DHP AI Platform"
+requires-python = ">=3.10"
+
+dependencies = []
