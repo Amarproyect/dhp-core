@@ -7,8 +7,7 @@ from dhp.providers.base import ProductProvider
 class PrestaShop(Provider, ProductProvider):
 
     def __init__(self, url, api_key):
-        self.url = url.rstrip("/")
-        self.api_key = api_key
+        super().__init__(url, api_key)
 
     def _get(self, resource):
         r = requests.get(

@@ -2,5 +2,7 @@ from abc import ABC
 
 
 class Provider(ABC):
-    """Clase base para todos los proveedores."""
-    pass
+
+    def __init__(self, url, api_key):
+        self.url = url.rstrip("/")
+        self.api_key = api_key
