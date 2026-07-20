@@ -6,6 +6,9 @@ class ProductService:
     def __init__(self, provider):
         self.api = provider
 
+    def count(self):
+        return self.api.product_count()
+
     def list(self):
         data = self.api.products()["products"]
 
