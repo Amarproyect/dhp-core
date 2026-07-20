@@ -1,4 +1,6 @@
 from dhp.models.product import Product
+
+
 class ProductService:
 
     def __init__(self, provider):
@@ -18,7 +20,6 @@ class ProductService:
         return products
 
     def search(self, text):
-
         text = text.lower()
 
         return [
@@ -28,7 +29,6 @@ class ProductService:
         ]
 
     def get(self, product_id):
-
         data = self.api.product(product_id)["product"]
 
         return Product(
@@ -39,3 +39,10 @@ class ProductService:
             ean13=data.get("ean13", ""),
             active=data.get("active") == "1",
         )
+
+    def exists(self, product_id):
+        try:
+            self.get(product_id)
+            return True
+        except Exception:
+            return False
