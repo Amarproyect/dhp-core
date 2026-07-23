@@ -21,6 +21,7 @@ class PluginLoader:
     """
 
     def __init__(self) -> None:
+
         self._plugins: list[Plugin] = []
         self._loaded_ids: set[str] = set()
 
@@ -29,12 +30,13 @@ class PluginLoader:
         return self._plugins
 
     def clear(self) -> None:
+
         self._plugins.clear()
         self._loaded_ids.clear()
 
     def discover(self, package_name: str) -> list[Plugin]:
         """
-        Busca todos los plugins dentro de un paquete.
+        Busca automáticamente todos los plugins.
         """
 
         self.clear()
@@ -68,10 +70,31 @@ class PluginLoader:
             package.__path__,
             package.__name__ + ".",
         ):
-            try:
-                yield importlib.import_module(module_info.name)
-            except Exception:
+
+            module_name = module_info.name
+
+            #
+            # Solo inspeccionar módulos que pueden contener plugins.
+            #
+            if not (
+                module_name.endswith(".plugin")
+                or module_name.endswith("_plugin")
+            ):
                 continue
+
+            try:
+
+                module = importlib.import_module(module_name)
+
+                print(f"[IMPORT OK] {module_name}")
+
+                yield module
+
+            except Exception as exc:
+
+                print(
+                    f"[IMPORT ERROR] {module_name}: {exc}"
+                )
 
     def _discover_module(
         self,
@@ -79,6 +102,12 @@ class PluginLoader:
     ) -> None:
 
         for _, obj in inspect.getmembers(module, inspect.isclass):
+
+            #
+            # Solo clases definidas en este módulo.
+            #
+            if obj.__module__ != module.__name__:
+                continue
 
             if obj is Plugin:
                 continue
@@ -90,15 +119,28 @@ class PluginLoader:
                 continue
 
             try:
+
                 instance = obj()
-            except Exception:
+
+            except Exception as exc:
+
+                print(
+                    f"[PLUGIN ERROR] {obj.__name__}: {exc}"
+                )
+
                 continue
 
-            #
-            # Evitar plugins duplicados
-            #
             if instance.id in self._loaded_ids:
+
+                print(
+                    f"[PLUGIN DUPLICADO] {instance.id}"
+                )
+
                 continue
+
+            print(
+                f"[PLUGIN OK] {instance.id} ({instance.name})"
+            )
 
             self._loaded_ids.add(instance.id)
             self._plugins.append(instance)

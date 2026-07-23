@@ -1,24 +1,17 @@
 """
-DHP HERMES
-
-Punto de entrada principal.
+DHP Hermes
 """
 
 from __future__ import annotations
 
-from .kernel.boot import Boot
+from dhp.kernel.boot import Boot
 
 
-def main() -> None:
+def main():
 
     boot = Boot()
 
-    boot.initialize()
-
-    #
-    # Descubrimiento automático
-    #
-    boot.discover("dhp.kernel")
+    boot.discover("dhp")
 
     boot.start()
 
@@ -26,4 +19,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+
     main()

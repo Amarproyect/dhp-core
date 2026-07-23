@@ -67,6 +67,10 @@ class Plugin(Lifecycle):
         self.metadata = metadata
         self.state = PluginState.INSTALLED
 
+    # ---------------------------------------------------------
+    # Propiedades
+    # ---------------------------------------------------------
+
     @property
     def id(self) -> str:
         return self.metadata.id
@@ -79,6 +83,10 @@ class Plugin(Lifecycle):
     def version(self) -> str:
         return self.metadata.version
 
+    # ---------------------------------------------------------
+    # Estado
+    # ---------------------------------------------------------
+
     def is_started(self) -> bool:
         return self.state == PluginState.STARTED
 
@@ -87,6 +95,24 @@ class Plugin(Lifecycle):
 
     def is_running(self) -> bool:
         return self.state == PluginState.STARTED
+
+    # ---------------------------------------------------------
+    # Extensiones
+    # ---------------------------------------------------------
+
+    def command_handlers(self) -> list[Any]:
+        """
+        Devuelve los CommandHandlers exportados por el plugin.
+
+        Los plugins que no implementen comandos simplemente
+        devolverán una lista vacía.
+        """
+
+        return []
+
+    # ---------------------------------------------------------
+    # Ciclo de vida
+    # ---------------------------------------------------------
 
     @abstractmethod
     def install(self) -> None:
