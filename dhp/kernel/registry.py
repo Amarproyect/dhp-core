@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from .config_service import ConfigService
+from .logger_service import LoggerService
 from .exceptions import (
     CapabilityNotFoundError,
     DuplicateCapabilityError,
@@ -31,7 +32,15 @@ class Registry:
         self._services = ServiceContainer()
 
         # Servicios nativos del Kernel
-        self._services.register("config", ConfigService())
+        self._services.register(
+            "config",
+            ConfigService(),
+        )
+
+        self._services.register(
+            "logger",
+            LoggerService(),
+        )
 
     # ---------------------------------------------------------
     # Plugins
@@ -69,7 +78,10 @@ class Registry:
 
         self._capabilities[capability] = plugin
 
-    def get_capability(self, capability: str) -> Plugin:
+    def get_capability(
+        self,
+        capability: str,
+    ) -> Plugin:
         if capability not in self._capabilities:
             raise CapabilityNotFoundError(capability)
 
@@ -86,9 +98,12 @@ class Registry:
     ) -> None:
         self._services.register(name, service)
 
-    def get_service(self, name: str) -> Any:
+    def get_service(
+        self,
+        name: str,
+    ) -> Any:
         return self._services.get(name)
 
     @property
     def services(self) -> ServiceContainer:
-        return self._services 
+        return self._services
