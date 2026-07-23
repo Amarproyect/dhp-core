@@ -1,19 +1,13 @@
 """
-DHP Kernel - Config Plugin
-
-Plugin encargado de exponer la configuración global del sistema.
+Configuration Plugin
 """
 
 from __future__ import annotations
 
-from .plugin import Plugin
-from .plugin import PluginMetadata
+from .plugin import Plugin, PluginMetadata
 
 
 class ConfigPlugin(Plugin):
-    """
-    Plugin que registra la configuración del sistema.
-    """
 
     def __init__(self) -> None:
         super().__init__(
@@ -21,11 +15,13 @@ class ConfigPlugin(Plugin):
                 id="config",
                 name="Configuration Plugin",
                 version="1.0.0",
+                priority=10,
+                dependencies=[],
             )
         )
 
     def install(self) -> None:
-        print("ConfigPlugin: install")
+        pass
 
     def start(self) -> None:
         print("ConfigPlugin: start")
@@ -34,4 +30,4 @@ class ConfigPlugin(Plugin):
         print("ConfigPlugin: stop")
 
     def uninstall(self) -> None:
-        print("ConfigPlugin: uninstall")
+        pass

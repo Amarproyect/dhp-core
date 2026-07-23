@@ -1,5 +1,5 @@
 """
-Plugin de prueba para validar el Kernel.
+Test Plugin
 """
 
 from __future__ import annotations
@@ -8,7 +8,6 @@ from .plugin import Plugin, PluginMetadata
 
 
 class TestPlugin(Plugin):
-    """Plugin de prueba."""
 
     def __init__(self) -> None:
         super().__init__(
@@ -16,11 +15,15 @@ class TestPlugin(Plugin):
                 id="test",
                 name="Test Plugin",
                 version="1.0.0",
+                priority=1,
+                dependencies=[
+                    "config",
+                ],
             )
         )
 
     def install(self) -> None:
-        print("TestPlugin: install")
+        pass
 
     def start(self) -> None:
         print("TestPlugin: start")
@@ -29,4 +32,4 @@ class TestPlugin(Plugin):
         print("TestPlugin: stop")
 
     def uninstall(self) -> None:
-        print("TestPlugin: uninstall")
+        pass
