@@ -1,44 +1,50 @@
 """
 DHP Kernel - Event Bus
 
-Bus de eventos interno del Kernel.
+Bus de eventos interno.
 """
 
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Callable
-from typing import Any
+from typing import Callable
+
+from .event import Event
 
 
-EventHandler = Callable[[Any], None]
+EventHandler = Callable[[Event], None]
 
 
 class EventBus:
     """
-    Bus de eventos simple.
-
-    Permite publicar eventos y registrar escuchadores.
+    Bus de eventos síncrono del Kernel.
     """
 
     def __init__(self) -> None:
+        self._subscribers: dict[str, list[EventHandler]] = defaultdict(list)
 
-        self._listeners: dict[str, list[EventHandler]] = defaultdict(list)
+    def subscribe(self, event_name: str, handler: EventHandler) -> None:
+        """
+        Registra un manejador para un evento.
+        """
+        self._subscribers[event_name].append(handler)
 
-    def subscribe(
-        self,
-        event: str,
-        handler: EventHandler,
-    ) -> None:
+    def unsubscribe(self, event_name: str, handler: EventHandler) -> None:
+        """
+        Elimina un manejador.
+        """
+        if handler in self._subscribers[event_name]:
+            self._subscribers[event_name].remove(handler)
 
-        self._listeners[event].append(handler)
+    def publish(self, event: Event) -> None:
+        """
+        Publica un evento.
+        """
+        for handler in self._subscribers.get(event.name, []):
+            handler(event)
 
-    def publish(
-        self,
-        event: str,
-        payload: Any = None,
-    ) -> None:
-
-        for handler in self._listeners.get(event, []):
-
-            handler(payload)
+    def clear(self) -> None:
+        """
+        Elimina todas las suscripciones.
+        """
+        self._subscribers.clear()
