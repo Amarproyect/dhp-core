@@ -1,0 +1,470 @@
+# ============================================================================
+# DHP - KERNEL DHP
+# ============================================================================
+
+Versión: 2.0
+
+Estado:
+EN DISEÑO
+
+Última actualización:
+31/07/2026
+
+Documento:
+04_KERNEL_DHP.md
+
+==============================================================================
+OBJETIVO
+==============================================================================
+
+Este documento describe la arquitectura conceptual del Kernel DHP.
+
+Representa el corazón del proyecto.
+
+Todo el resto del sistema deberá construirse alrededor de este Kernel.
+
+La implementación podrá evolucionar.
+
+La arquitectura NO.
+
+==============================================================================
+
+FILOSOFÍA
+
+==============================================================================
+
+El Kernel DHP constituye la lógica empresarial del proyecto.
+
+Ningún modelo LLM contendrá reglas de negocio.
+
+Toda decisión importante deberá ejecutarse desde el Kernel.
+
+La IA únicamente interpretará lenguaje natural.
+
+Nunca contendrá conocimiento empresarial permanente.
+
+==============================================================================
+
+PRINCIPIO FUNDAMENTAL
+
+==============================================================================
+
+                    IA
+                     │
+                     │
+             Adaptador IA
+                     │
+                     │
+              KERNEL DHP
+                     │
+ ┌───────────────────┼────────────────────┐
+ │                   │                    │
+Prestashop     PostgreSQL          Listmonk
+ │                   │                    │
+Oracle          GitHub            Docker
+
+El Kernel siempre ocupará el centro.
+
+==============================================================================
+
+OBJETIVOS DEL KERNEL
+
+==============================================================================
+
+Separar completamente:
+
+- Inteligencia Artificial.
+
+- Infraestructura.
+
+- Lógica empresarial.
+
+- Integraciones.
+
+- Automatizaciones.
+
+==============================================================================
+
+CARACTERÍSTICAS
+
+==============================================================================
+
+El Kernel deberá ser:
+
+Modular.
+
+Extensible.
+
+Desacoplado.
+
+Portable.
+
+Testeable.
+
+Escalable.
+
+Independiente.
+
+==============================================================================
+
+CAPAS PREVISTAS
+
+==============================================================================
+
+core/
+
+Contendrá las clases fundamentales.
+
+Nunca dependerá de Prestashop.
+
+Nunca dependerá de Hermes.
+
+Nunca dependerá de PostgreSQL.
+
+------------------------------------------------------------------------------
+
+kernel/
+
+Control principal del sistema.
+
+Coordinación.
+
+Registro de capacidades.
+
+Descubrimiento.
+
+Carga dinámica.
+
+------------------------------------------------------------------------------
+
+runtime/
+
+Responsable de ejecutar el sistema.
+
+Inicialización.
+
+Eventos.
+
+Ciclo de vida.
+
+Servicios.
+
+------------------------------------------------------------------------------
+
+providers/
+
+Adaptadores hacia modelos IA.
+
+Ejemplos previstos:
+
+Hermes
+
+OpenAI
+
+Claude
+
+Gemini
+
+DeepSeek
+
+Modelos locales
+
+------------------------------------------------------------------------------
+
+connectors/
+
+Conectores hacia aplicaciones empresariales.
+
+Ejemplos:
+
+Prestashop
+
+GitHub
+
+PostgreSQL
+
+Listmonk
+
+Docker
+
+Oracle
+
+Filesystem
+
+------------------------------------------------------------------------------
+
+plugins/
+
+Sistema de ampliación.
+
+Toda nueva funcionalidad deberá añadirse preferentemente mediante plugins.
+
+------------------------------------------------------------------------------
+
+services/
+
+Servicios reutilizables.
+
+No contendrán lógica específica de un proveedor.
+
+------------------------------------------------------------------------------
+
+config/
+
+Configuración global.
+
+==============================================================================
+
+CAPABILITY REGISTRY
+
+==============================================================================
+
+Uno de los elementos más importantes del Kernel.
+
+Responsabilidades:
+
+Registrar capacidades.
+
+Resolver capacidades.
+
+Consultar capacidades.
+
+Descubrir capacidades.
+
+Deshabilitar capacidades.
+
+==============================================================================
+
+PLUGIN MANAGER
+
+==============================================================================
+
+Responsable de:
+
+Descubrir plugins.
+
+Cargarlos.
+
+Inicializarlos.
+
+Desactivarlos.
+
+Actualizar dependencias.
+
+==============================================================================
+
+EVENT BUS
+
+==============================================================================
+
+Permitirá desacoplar completamente los módulos.
+
+Ejemplos:
+
+Producto creado.
+
+Pedido recibido.
+
+Cliente actualizado.
+
+Campaña enviada.
+
+Repositorio actualizado.
+
+==============================================================================
+
+SERVICE CONTAINER
+
+==============================================================================
+
+Responsable de:
+
+Inyección de dependencias.
+
+Resolución de servicios.
+
+Registro de implementaciones.
+
+==============================================================================
+
+DISCOVERY AUTOMÁTICO
+
+==============================================================================
+
+Todo módulo deberá poder descubrirse automáticamente.
+
+No deberán existir registros manuales salvo casos excepcionales.
+
+==============================================================================
+
+PROVIDERS IA
+
+==============================================================================
+
+Los modelos IA nunca deberán conocer el Kernel.
+
+Únicamente utilizarán interfaces públicas.
+
+Ejemplos previstos:
+
+Hermes Provider
+
+Claude Provider
+
+OpenAI Provider
+
+Gemini Provider
+
+Copilot Provider
+
+==============================================================================
+
+CONNECTORS
+
+==============================================================================
+
+Los conectores constituyen el puente entre el Kernel y el mundo exterior.
+
+Ejemplos previstos.
+
+Prestashop Connector
+
+PostgreSQL Connector
+
+GitHub Connector
+
+Docker Connector
+
+Oracle Connector
+
+Filesystem Connector
+
+SMTP Connector
+
+Listmonk Connector
+
+==============================================================================
+
+MEMORIA
+
+==============================================================================
+
+El conocimiento empresarial deberá almacenarse fuera del modelo.
+
+El Kernel será responsable de:
+
+Persistencia.
+
+Versionado.
+
+Contexto.
+
+Preferencias.
+
+Historial.
+
+==============================================================================
+
+REGLAS DE DISEÑO
+
+==============================================================================
+
+Nunca escribir lógica empresarial dentro de:
+
+Hermes.
+
+OpenAI.
+
+Claude.
+
+DeepSeek.
+
+Los proveedores IA únicamente traducen lenguaje natural.
+
+==============================================================================
+
+RELACIÓN CON HERMES
+
+==============================================================================
+
+Durante las últimas sesiones se investigó la arquitectura oficial de Hermes.
+
+Conclusiones obtenidas:
+
+Hermes proporciona:
+
+- Skills
+
+- Tools
+
+- MCP
+
+- Memoria
+
+- Terminal
+
+- Gestión de procesos
+
+- Ejecución de código
+
+La filosofía del proyecto DHP consiste en reutilizar estas capacidades siempre
+que sea posible.
+
+El Kernel NO sustituirá a Hermes.
+
+Hermes NO sustituirá al Kernel.
+
+Ambos sistemas deberán complementarse.
+
+==============================================================================
+
+DECISIÓN DE ARQUITECTURA
+
+==============================================================================
+
+Decisión vigente:
+
+Hermes actuará como agente inteligente.
+
+El Kernel DHP actuará como núcleo empresarial.
+
+La comunicación entre ambos deberá mantenerse desacoplada.
+
+Esta decisión podrá revisarse únicamente si aparece evidencia técnica sólida
+que justifique un cambio.
+
+==============================================================================
+
+PRÓXIMA FASE
+
+==============================================================================
+
+Diseñar la integración definitiva entre:
+
+Hermes
+
+↓
+
+Skills
+
+↓
+
+MCP
+
+↓
+
+Kernel DHP
+
+↓
+
+Servicios empresariales
+
+Antes de comenzar la implementación deberán investigarse en profundidad las
+capacidades oficiales de Hermes para garantizar que la arquitectura final siga
+las recomendaciones del proyecto original.
+
+==============================================================================
+
+FIN DEL DOCUMENTO
+
+==============================================================================
