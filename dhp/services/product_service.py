@@ -1,17 +1,21 @@
 from dhp.models.product import Product
+
+
 class ProductService:
+
+    FIELDS = ["id", "reference", "name", "price", "ean13", "active"]
 
     def __init__(self, provider):
         self.api = provider
 
     def list(self):
-        data = self.api.products()["products"]
+        data = self.api.products(display=self.FIELDS)["products"]
 
         products = []
 
         for item in data:
             try:
-                products.append(self.get(item["id"]))
+                products.append(self._to_product(item))
             except Exception:
                 pass
 
@@ -31,6 +35,10 @@ class ProductService:
 
         data = self.api.product(product_id)["product"]
 
+        return self._to_product(data)
+
+    @staticmethod
+    def _to_product(data):
         return Product(
             id=data.get("id"),
             reference=data.get("reference", ""),
